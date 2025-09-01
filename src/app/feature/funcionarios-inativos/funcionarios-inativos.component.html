@@ -1,0 +1,32 @@
+
+<div class="container">
+    <h2>funcionarios Inativos</h2>
+    <ng-container *ngIf="funcionariosInativos$ | async as funcionarios">
+        <p-table
+            [value]="funcionarios"
+            [paginator]="true"
+            [rows]="5"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [rowsPerPageOptions]="[5, 10, 20]"
+        >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:25%">Nome</th>
+                    <th style="width:25%">Matricula</th>
+                    <th style="width:25%">Telefone</th>
+                    <th style="width:25%">Status</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+                <tr *ngFor="let funcionario of funcionarios">
+                    <td>{{ funcionario.nome }}</td>
+                    <td>{{ funcionario.matricula }}</td>
+                    <td>{{ funcionario.telefone }}</td>
+                    <td>{{ funcionario.status }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-container>
+
+</div>
+

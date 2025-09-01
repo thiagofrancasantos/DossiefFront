@@ -1,0 +1,45 @@
+<h2 style="color:#666666;  padding-left: 200px; margin-top: 30px; margin-bottom: 20px;" class="--primary-color-text">Funcionários Ativos</h2>
+<div class="card-container" style="width: 100%;">
+    <div style="display: flex; justify-content: flex-start; padding: 2rem 0;">
+      <p-autoComplete
+        [(ngModel)]="selectedItems"
+        [suggestions]="items"
+        (completeMethod)="search($event)"
+        (onChange)="onSelectionChange()"
+        [field]="'nome'"
+        [multiple]="true"
+        placeholder="Digite o nome do funcionário"
+        [style]="{ width: '50vw', 'minWidth': '300px' }"
+      />
+    </div>
+
+</div>
+
+
+ <div class="container">
+    
+  <p-table
+    [value]="filteredFuncionarios"
+    [paginator]="true"
+    [rows]="10"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rowsPerPageOptions]="[5, 10, 20]"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:25%">Nome</th>
+        <th style="width:25%">Matrícula</th>
+        <th style="width:25%">Telefone</th>
+        <th style="width:25%">Status</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-funcionario>
+      <tr>
+        <td>{{ funcionario.nome }}</td>
+        <td>{{ funcionario.matricula }}</td>
+        <td>{{ funcionario.telefone }}</td>
+        <td>{{ funcionario.status }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

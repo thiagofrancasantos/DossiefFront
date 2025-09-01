@@ -1,0 +1,29 @@
+::ng-deep .custom-menubar {
+  height: 70px; // ou o valor desejado
+  align-items: center;
+
+  .p-menubar-root-list > .p-menuitem {
+    height: 70px;
+    display: flex;
+    align-items: center;
+  }
+
+  .p-menubar-start,
+  .p-menubar-end {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.custom-input {
+  width: 200px;   // ou qualquer valor desejado
+  height: 40px;
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+
+:host ::ng-deep .p-overlaypanel {
+  z-index: 9999 !important;
+}
