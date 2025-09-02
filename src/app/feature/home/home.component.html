@@ -1,45 +1,51 @@
-
 <div class="container">
-    <div class="content-container"> 
-        <p-button class="uniform-button" 
-                icon="pi pi-user" 
-                [rounded]="true" [text]="true" 
-                [raised]="true" 
-                label="Novo Funcionario" 
-                size="large" 
-                [outlined]="true" 
-                />
-        <p-button class="uniform-button" 
-                icon="pi pi-user" 
-                [rounded]="true" 
-                [text]="true" 
-                [raised]="true"  
-                label="Funcionarios Ativos" 
-                size="large" 
-                [outlined]="true" 
-                severity="success"
-                (click)="navegarFuncionariosAtivos()" 
-                />
-        <p-button class="uniform-button" 
-                icon="pi pi-user" 
-                [rounded]="true" 
-                [text]="true" 
-                [raised]="true" 
-                label="Funcionarios Suspensos" 
-                size="large" 
-                [outlined]="true" 
-                severity="warning" 
-                (click)="navegarFuncionariosSuspensos()"
-                />
-        <p-button class="uniform-button" 
-                icon="pi pi-user" 
-                [rounded]="true" 
-                [text]="true" 
-                [raised]="true"  
-                label="Funcionarios Inativos" 
-                size="large" 
-                [outlined]="true" 
-                severity="danger" 
-                (click)="navegarFuncionariosInativos()"/>
-    </div>
+  <div class="content-container">
+    <p-button
+      class="uniform-button"
+      icon="pi pi-user"
+      [rounded]="true"
+      [text]="true"
+      [raised]="true"
+      label="Novo Funcionario"
+      size="large"
+      [outlined]="true"
+      (click)="navegarNovoFuncionario()"
+    />
+    <p-button
+      class="uniform-button"
+      icon="pi pi-user"
+      [rounded]="true"
+      [text]="true"
+      [raised]="true"
+      label="Funcionarios Ativos"
+      size="large"
+      [outlined]="true"
+      severity="success"
+      (click)="navegarFuncionariosAtivos()"
+    />
+    <p-button
+      class="uniform-button"
+      icon="pi pi-user"
+      [rounded]="true"
+      [text]="true"
+      [raised]="true"
+      label="Funcionarios Suspensos"
+      size="large"
+      [outlined]="true"
+      severity="warning"
+      (click)="navegarFuncionariosSuspensos()"
+    />
+    <p-button
+      class="uniform-button"
+      icon="pi pi-user"
+      [rounded]="true"
+      [text]="true"
+      [raised]="true"
+      label="Funcionarios Inativos"
+      size="large"
+      [outlined]="true"
+      severity="danger"
+      (click)="navegarFuncionariosInativos()"
+    />
+  </div>
 </div>

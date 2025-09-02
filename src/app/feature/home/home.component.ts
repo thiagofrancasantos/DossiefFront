@@ -1,33 +1,33 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ButtonModule } from 'primeng/button'
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    ButtonModule
-  ],
+  imports: [ButtonModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  constructor(private router: Router) {}
 
-  constructor(private router: Router) {    
-  }
-
-  navegarFuncionariosAtivos(){
-    console.log("NavegarFuncionariosAtivos Funcionando");
+  navegarFuncionariosAtivos() {
+    console.log('NavegarFuncionariosAtivos Funcionando');
     this.router.navigate(['/funcionarios-ativos']);
   }
 
-  navegarFuncionariosInativos(){
-    console.log("NavegarFuncionariosInativos Funcionando");
+  navegarFuncionariosInativos() {
+    console.log('NavegarFuncionariosInativos Funcionando');
     this.router.navigate(['/funcionarios-inativos']);
   }
-  navegarFuncionariosSuspensos(){
-    console.log("NavegarFuncionariosSuspensos Funcionando");
-    this.router.navigate(['/funcionarios-suspensos'])
+  navegarFuncionariosSuspensos() {
+    console.log('NavegarFuncionariosSuspensos Funcionando');
+    this.router.navigate(['/funcionarios-suspensos']);
+  }
+  navegarNovoFuncionario() {
+    console.log('NavegarNovoFuncionario Funcionando');
+    this.router.navigate(['/novo-funcionario']);
   }
 }

@@ -1,57 +1,80 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd, Event as RouterEvent } from '@angular/router';
 import { TableModule } from 'primeng/table';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 import { FuncionariosService } from '../funcionarios.service';
 import { IFuncionario } from '../models/IFuncionario';
 import { Observable } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { FormsModule } from '@angular/forms';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-funcionarios-ativos',
   standalone: true,
   imports: [
     TableModule,
-    CommonModule,
     AutoCompleteModule,
-    FormsModule
+    FormsModule,
+    CommonModule,
+    ButtonModule,
   ],
   templateUrl: './funcionarios-ativos.component.html',
-  styleUrl: './funcionarios-ativos.component.scss'
+  styleUrl: './funcionarios-ativos.component.scss',
 })
-
-export class FuncionariosAtivosComponent {
-  
+export class FuncionariosAtivosComponent implements OnInit {
   items: IFuncionario[] = [];
-  selectedItems: IFuncionario[] = []; // Funcionários selecionados no autocomplete
-  allFuncionarios: IFuncionario[] = []; // Lista completa (usada para autocomplete)
-  filteredFuncionarios: IFuncionario[] = []; // Lista que será exibida na tabela
-
-  
+  selectedItems: IFuncionario[] = [];
+  allFuncionarios: IFuncionario[] = [];
+  filteredFuncionarios: IFuncionario[] = [];
   funcionariosAtivos$?: Observable<IFuncionario[]>;
 
-  constructor(private funcionariosAtivosService: FuncionariosService){}
+  constructor(
+    private funcionariosAtivosService: FuncionariosService,
+    private router: Router
+  ) {
+    // Recarrega a lista quando a navegação para /funcionarios-ativos ocorre
+    this.router.events
+      .pipe(
+        filter(
+          (event: RouterEvent): event is NavigationEnd =>
+            event instanceof NavigationEnd
+        )
+      )
+      .subscribe((event: NavigationEnd) => {
+        if (event.url === '/funcionarios-ativos') {
+          this.loadFuncionarios();
+        }
+      });
+  }
 
   ngOnInit(): void {
-    this.funcionariosAtivosService.getFuncionariosAtivos().subscribe(data => {
-      this.allFuncionarios = data;
-      this.filteredFuncionarios = data; // Mostra todos por padrão
+    this.loadFuncionarios();
+  }
+
+  loadFuncionarios(): void {
+    this.funcionariosAtivosService.getFuncionariosAtivos().subscribe({
+      next: (data) => {
+        this.allFuncionarios = data;
+        this.filteredFuncionarios = [...data];
+      },
+      error: (err) => {
+        console.error('Error fetching funcionarios:', err);
+      },
     });
   }
 
-  search(event: any) {
-    const query = event.query.toLowerCase();
-    this.items = this.allFuncionarios.filter(func =>
+  search(event: any): void {
+    const query = event.query ? event.query.toLowerCase() : '';
+    this.items = this.allFuncionarios.filter((func) =>
       func.nome.toLowerCase().includes(query)
     );
+    this.filteredFuncionarios = this.items;
   }
 
-  onSelectionChange() {
-    if (this.selectedItems.length > 0) {
-      this.filteredFuncionarios = this.selectedItems;
-    } else {
-     this.filteredFuncionarios = this.allFuncionarios;
-    }
+  editFuncionario(funcionarioId: string): void {
+    console.log('Navigating to edit-funcionario with id:', funcionarioId);
+    this.router.navigate(['/edit-funcionario', funcionarioId]);
   }
-
 }
