@@ -1,11 +1,7 @@
 <div class="container" style="padding: 20px">
   <h2 style="color: #666666; margin: 30px 0 20px 0">Criar Novo Funcionário</h2>
 
-  <div
-    *ngIf="errorMessage"
-    class="error-message"
-    style="color: red; margin-bottom: 20px"
-  >
+  <div *ngIf="errorMessage" class="error-message" style="color: red; margin-bottom: 20px">
     {{ errorMessage }}
   </div>
 
@@ -13,146 +9,73 @@
     <div style="margin-bottom: 15px">
       <label for="nome">Nome:</label>
       <input pInputText id="nome" formControlName="nome" style="width: 100%" />
-      <small
-        *ngIf="funcionarioForm.get('nome')?.touched && funcionarioForm.get('nome')?.errors?.['required']"
-        style="color: red"
-      >
+      <small *ngIf="funcionarioForm.get('nome')?.touched && funcionarioForm.get('nome')?.errors?.['required']" style="color: red">
         Nome é obrigatório.
       </small>
     </div>
+
     <div style="margin-bottom: 15px">
       <label for="matricula">Matrícula:</label>
-      <input
-        pInputText
-        id="matricula"
-        formControlName="matricula"
-        style="width: 100%"
-      />
-      <small
-        *ngIf="funcionarioForm.get('matricula')?.touched && funcionarioForm.get('matricula')?.errors?.['required']"
-        style="color: red"
-      >
+      <input pInputText id="matricula" formControlName="matricula" style="width: 100%" />
+      <small *ngIf="funcionarioForm.get('matricula')?.touched && funcionarioForm.get('matricula')?.errors?.['required']" style="color: red">
         Matrícula é obrigatória.
       </small>
     </div>
+
     <div style="margin-bottom: 15px">
       <label for="telefone">Telefone:</label>
-      <input
-        pInputText
-        id="telefone"
-        formControlName="telefone"
-        style="width: 100%"
-      />
-      <small
-        *ngIf="funcionarioForm.get('telefone')?.touched && funcionarioForm.get('telefone')?.errors?.['required']"
-        style="color: red"
-      >
+      <input pInputText id="telefone" formControlName="telefone" style="width: 100%" />
+      <small *ngIf="funcionarioForm.get('telefone')?.touched && funcionarioForm.get('telefone')?.errors?.['required']" style="color: red">
         Telefone é obrigatório.
       </small>
     </div>
+
     <div style="margin-bottom: 15px">
       <label for="status">Status:</label>
-      <input
-        pInputText
-        id="status"
-        formControlName="status"
-        style="width: 100%"
-      />
-      <small
-        *ngIf="funcionarioForm.get('status')?.touched && funcionarioForm.get('status')?.errors?.['required']"
-        style="color: red"
-      >
+      <input pInputText id="status" formControlName="status" style="width: 100%" />
+      <small *ngIf="funcionarioForm.get('status')?.touched && funcionarioForm.get('status')?.errors?.['required']" style="color: red">
         Status é obrigatório.
       </small>
     </div>
 
     <h3>Documentos</h3>
     <div formArrayName="documentos">
-      <div
-        *ngFor="let doc of documentos.controls; let i = index"
-        [formGroupName]="i"
-        style="
-          margin-bottom: 20px;
-          border: 1px solid #ccc;
-          padding: 10px;
-          border-radius: 4px;
-        "
-      >
+      <div *ngFor="let doc of documentos.controls; let i = index" [formGroupName]="i"
+           style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 4px;">
         <div style="margin-bottom: 10px">
           <label [for]="'categoria' + i">Categoria:</label>
-          <select
-            [id]="'categoria' + i"
-            formControlName="categoria"
-            (change)="onSelectChange($event, i)"
-            style="width: 200px; padding: 5px"
-          >
+          <select [id]="'categoria' + i" formControlName="categoria" style="width: 200px; padding: 5px">
             <option value="" disabled selected>Selecione uma categoria</option>
-            <option
-              *ngFor="let option of categoriasOptions"
-              [value]="option.value"
-            >
+            <option *ngFor="let option of categoriasOptions" [value]="option.value">
               {{ option.label }}
             </option>
           </select>
-          <small
-            *ngIf="doc.get('categoria')?.touched && doc.get('categoria')?.errors?.['required']"
-            style="color: red"
-          >
+          <small *ngIf="doc.get('categoria')?.touched && doc.get('categoria')?.errors?.['required']" style="color: red">
             Categoria é obrigatória.
           </small>
         </div>
+
         <div style="margin-bottom: 10px">
           <label [for]="'arquivo' + i">Arquivo:</label>
-          <input
-            type="file"
-            [id]="'arquivo' + i"
-            (change)="onFileChange($event, i)"
-          />
-          <small
-            *ngIf="doc.get('arquivo')?.touched && doc.get('arquivo')?.errors?.['required']"
-            style="color: red"
-          >
+          <input type="file" [id]="'arquivo' + i" (change)="onFileChange($event, i)" />
+          <small *ngIf="doc.get('arquivo')?.touched && doc.get('arquivo')?.errors?.['required']" style="color: red">
             Arquivo é obrigatório.
           </small>
         </div>
-        <button
-          pButton
-          type="button"
-          label="Remover Documento"
-          icon="pi pi-trash"
-          class="p-button-danger"
-          (click)="removeDocumento(i)"
-        ></button>
+
+        <button pButton type="button" label="Remover Documento" icon="pi pi-trash"
+                class="p-button-danger" (click)="removeDocumento(i)"></button>
       </div>
     </div>
-    <button
-      pButton
-      type="button"
-      label="Adicionar Documento"
-      icon="pi pi-plus"
-      class="p-button-secondary"
-      (click)="addDocumento()"
-      style="margin-bottom: 20px"
-    ></button>
+
+    <button pButton type="button" label="Adicionar Documento" icon="pi pi-plus"
+            class="p-button-secondary" (click)="addDocumento()" style="margin-bottom: 20px"></button>
 
     <div style="margin-top: 20px">
-      <button
-        pButton
-        type="submit"
-        label="Criar Funcionário"
-        icon="pi pi-check"
-        class="p-button-primary"
-        [disabled]="!funcionarioForm.valid"
-      ></button>
-      <button
-        pButton
-        type="button"
-        label="Cancelar"
-        icon="pi pi-times"
-        class="p-button-secondary"
-        (click)="cancel()"
-        style="margin-left: 10px"
-      ></button>
+      <button pButton type="submit" label="Criar Funcionário" icon="pi pi-check"
+              class="p-button-primary" [disabled]="!funcionarioForm.valid"></button>
+      <button pButton type="button" label="Cancelar" icon="pi pi-times"
+              class="p-button-secondary" (click)="cancel()" style="margin-left: 10px"></button>
     </div>
   </form>
 </div>

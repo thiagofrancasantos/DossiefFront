@@ -24,7 +24,7 @@ import { FuncionariosService } from '../funcionarios.service';
     InputTextModule,
   ],
   templateUrl: './novo-funcionario.component.html',
-  styleUrl: './novo-funcionario.component.scss',
+  styleUrls: ['./novo-funcionario.component.scss'],
 })
 export class NovoFuncionarioComponent {
   funcionarioForm: FormGroup;
@@ -34,14 +34,12 @@ export class NovoFuncionarioComponent {
     { label: 'Histórico', value: 'Historico' },
   ];
   errorMessage: string | null = null;
-  selectedCategoria: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private funcionariosService: FuncionariosService,
     private router: Router
   ) {
-    console.log('categoriasOptions:', this.categoriasOptions); // Debug
     this.funcionarioForm = this.fb.group({
       nome: ['', Validators.required],
       matricula: ['', Validators.required],
@@ -56,38 +54,29 @@ export class NovoFuncionarioComponent {
   }
 
   addDocumento(): void {
-    console.log('Adding document:', this.documentos.length); // Debug
     this.documentos.push(
       this.fb.group({
         categoria: ['', Validators.required],
         arquivo: [null, Validators.required],
       })
     );
-    console.log('Document added:', this.documentos.value); // Debug
   }
 
   removeDocumento(index: number): void {
     this.documentos.removeAt(index);
-    console.log('Document removed:', this.documentos.value); // Debug
   }
 
   onFileChange(event: any, index: number): void {
     const file = event.target.files[0];
     if (file) {
+      console.log('File selected:', file.name, 'for index:', index);
       this.documentos.at(index).patchValue({ arquivo: file });
-      console.log('File selected for document', index, ':', file.name); // Debug
-    }
-  }
-
-  onSelectChange(event: any, index?: number): void {
-    console.log('Select changed:', event.target.value, 'Index:', index); // Debug
-    if (index !== undefined) {
-      console.log('FormArray documentos:', this.documentos.value); // Debug
+    } else {
+      console.log('No file selected for index:', index);
     }
   }
 
   createFuncionario(): void {
-    console.log('Form value before submission:', this.funcionarioForm.value); // Debug
     if (this.funcionarioForm.valid) {
       const formData = new FormData();
       formData.append('Nome', this.funcionarioForm.value.nome);
@@ -95,26 +84,26 @@ export class NovoFuncionarioComponent {
       formData.append('Telefone', this.funcionarioForm.value.telefone);
       formData.append('Status', this.funcionarioForm.value.status);
 
-      this.funcionarioForm.value.documentos.forEach(
-        (doc: any, index: number) => {
-          formData.append(`Arquivos[${index}]`, doc.arquivo);
-          formData.append(`Categorias[${index}]`, doc.categoria);
+      this.funcionarioForm.value.documentos.forEach((doc: any) => {
+        if (doc.arquivo && doc.categoria) {
+          console.log('Appending file:', doc.arquivo.name, 'with category:', doc.categoria);
+          formData.append('Arquivos', doc.arquivo);
+          formData.append('Categorias', doc.categoria);
         }
-      );
+      });
 
       this.funcionariosService.createFuncionario(formData).subscribe({
         next: () => {
-          console.log('Funcionario created successfully'); // Debug
           this.router.navigate(['/funcionarios-ativos']);
         },
         error: (err: any) => {
-          console.error('Error creating funcionario:', err);
-          this.errorMessage = 'Não foi possível criar o funcionário.';
+          console.error('Erro ao criar funcionário:', err);
+          this.errorMessage = err.error?.Message || 'Não foi possível criar o funcionário.';
         },
       });
     } else {
       this.errorMessage = 'Por favor, preencha todos os campos obrigatórios.';
-      console.log('Form invalid:', this.funcionarioForm.errors); // Debug
+      this.funcionarioForm.markAllAsTouched();
     }
   }
 

@@ -1,135 +1,90 @@
-<div class="container" style="padding: 20px">
-  <h2 style="color: #666666; margin: 30px 0 20px 0">Editar Funcionário</h2>
-
-  <div
-    *ngIf="errorMessage"
-    class="error-message"
-    style="color: red; margin-bottom: 20px"
-  >
-    {{ errorMessage }}
-  </div>
-
-  <div *ngIf="funcionario; else loading">
-    <div
-      class="card"
-      style="padding: 20px; border: 1px solid #e0e0e0; border-radius: 4px"
-    >
-      <form [formGroup]="funcionarioForm" (ngSubmit)="saveFuncionario()">
-        <div style="margin-bottom: 15px">
-          <label for="nome">Nome:</label>
-          <input
-            pInputText
-            id="nome"
-            formControlName="nome"
-            style="width: 100%"
-          />
-          <small
-            *ngIf="funcionarioForm.get('nome')?.touched && funcionarioForm.get('nome')?.errors?.['required']"
-            style="color: red"
-          >
+<div class="p-4">
+  <p-card *ngIf="funcionario" header="Editar Funcionário">
+    <form [formGroup]="funcionarioForm" (ngSubmit)="saveFuncionario()">
+      <div class="p-fluid">
+        <div class="field">
+          <label for="nome">Nome</label>
+          <input id="nome" type="text" pInputText formControlName="nome" />
+          <small *ngIf="funcionarioForm.get('nome')?.touched && funcionarioForm.get('nome')?.errors?.['required']" class="p-error">
             Nome é obrigatório.
           </small>
         </div>
-        <div style="margin-bottom: 15px">
-          <label for="matricula">Matrícula:</label>
-          <input
-            pInputText
-            id="matricula"
-            formControlName="matricula"
-            style="width: 100%"
-          />
-          <small
-            *ngIf="funcionarioForm.get('matricula')?.touched && funcionarioForm.get('matricula')?.errors?.['required']"
-            style="color: red"
-          >
+
+        <div class="field">
+          <label for="matricula">Matrícula</label>
+          <input id="matricula" type="text" pInputText formControlName="matricula" />
+          <small *ngIf="funcionarioForm.get('matricula')?.touched && funcionarioForm.get('matricula')?.errors?.['required']" class="p-error">
             Matrícula é obrigatória.
           </small>
         </div>
-        <div style="margin-bottom: 15px">
-          <label for="telefone">Telefone:</label>
-          <input
-            pInputText
-            id="telefone"
-            formControlName="telefone"
-            style="width: 100%"
-          />
-          <small
-            *ngIf="funcionarioForm.get('telefone')?.touched && funcionarioForm.get('telefone')?.errors?.['required']"
-            style="color: red"
-          >
+
+        <div class="field">
+          <label for="telefone">Telefone</label>
+          <input id="telefone" type="text" pInputText formControlName="telefone" />
+          <small *ngIf="funcionarioForm.get('telefone')?.touched && funcionarioForm.get('telefone')?.errors?.['required']" class="p-error">
             Telefone é obrigatório.
           </small>
         </div>
-        <div style="margin-bottom: 15px">
-          <label for="status">Status:</label>
-          <input
-            pInputText
-            id="status"
+
+        <div class="field">
+          <label for="status">Status</label>
+          <p-dropdown
             formControlName="status"
-            style="width: 100%"
-          />
-          <small
-            *ngIf="funcionarioForm.get('status')?.touched && funcionarioForm.get('status')?.errors?.['required']"
-            style="color: red"
-          >
+            [options]="['Ativo', 'Suspenso', 'Inativo']"
+            placeholder="Selecione o status"
+          ></p-dropdown>
+          <small *ngIf="funcionarioForm.get('status')?.touched && funcionarioForm.get('status')?.errors?.['required']" class="p-error">
             Status é obrigatório.
           </small>
         </div>
 
-        <h3>Documentos</h3>
-        <ul
-          *ngIf="
-            funcionario.documentos && funcionario.documentos.length > 0;
-            else noDocuments
-          "
-        >
-          <li *ngFor="let doc of funcionario.documentos">
-            <strong>Categoria:</strong> {{ doc.categoria }} <br />
-            <strong>Nome do Arquivo:</strong>
-            {{ doc.nomeArquivo || doc.arquivo }} <br />
-            <a *ngIf="doc.url" [href]="doc.url" target="_blank"
-              >Baixar/Visualizar</a
-            >
-            <span *ngIf="!doc.url">Sem URL disponível</span>
-          </li>
-        </ul>
-        <ng-template #noDocuments>
-          <p>Nenhum documento associado.</p>
-        </ng-template>
+        <h5>Documentos</h5>
+        <div formArrayName="documentos">
+          <div *ngFor="let doc of documentos.controls; let i = index" [formGroupName]="i" class="field mb-3 p-3 border-round border-1">
+            <div class="field">
+              <label [for]="'categoria' + i">Categoria</label>
+              <p-dropdown
+                [id]="'categoria' + i"
+                formControlName="categoria"
+                [options]="categoriasOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Selecione uma categoria"
+              ></p-dropdown>
+              <small *ngIf="doc.get('categoria')?.touched && doc.get('categoria')?.errors?.['required']" class="p-error">
+                Categoria é obrigatória.
+              </small>
+            </div>
 
-        <div style="margin-top: 20px">
-          <button
-            pButton
-            type="submit"
-            label="Salvar"
-            icon="pi pi-check"
-            class="p-button-primary"
-            [disabled]="!funcionarioForm.valid"
-          ></button>
-          <button
-            pButton
-            type="button"
-            label="Deletar"
-            icon="pi pi-trash"
-            class="p-button-danger"
-            (click)="deleteFuncionario()"
-            style="margin-left: 10px"
-          ></button>
-          <button
-            pButton
-            type="button"
-            label="Voltar"
-            icon="pi pi-arrow-left"
-            class="p-button-secondary"
-            (click)="goBack()"
-            style="margin-left: 10px"
-          ></button>
+            <div class="field">
+              <label [for]="'arquivo' + i">Arquivo</label>
+              <input type="file" [id]="'arquivo' + i" (change)="onFileChange($event, i)" />
+              <small *ngIf="doc.get('arquivo')?.touched && doc.get('arquivo')?.errors?.['required']" class="p-error">
+                Arquivo é obrigatório.
+              </small>
+              <small *ngIf="doc.get('nomeArquivo')?.value" class="p-text-secondary">
+                Arquivo atual: {{ doc.get('nomeArquivo')?.value }}
+              </small>
+            </div>
+
+            <button pButton type="button" label="Remover Documento" icon="pi pi-trash" class="p-button-danger" (click)="removeDocumento(i)"></button>
+          </div>
         </div>
-      </form>
-    </div>
+
+        <button pButton type="button" label="Adicionar Documento" icon="pi pi-plus" class="p-button-secondary mb-3" (click)="addDocumento()"></button>
+      </div>
+
+      <div class="flex justify-content-between mt-3">
+        <button pButton type="submit" label="Salvar" class="p-button-success" [disabled]="!funcionarioForm.valid"></button>
+        <button pButton type="button" label="Excluir" class="p-button-danger" (click)="deleteFuncionario()"></button>
+        <button pButton type="button" label="Voltar" class="p-button-secondary" (click)="goBack()"></button>
+      </div>
+    </form>
+  </p-card>
+
+  <div *ngIf="!funcionario && !errorMessage" class="flex justify-content-center">
+    <p-progressSpinner></p-progressSpinner>
   </div>
 
-  <ng-template #loading>
-    <p>Carregando...</p>
-  </ng-template>
+  <p-message *ngIf="errorMessage" severity="error" [text]="errorMessage"></p-message>
 </div>

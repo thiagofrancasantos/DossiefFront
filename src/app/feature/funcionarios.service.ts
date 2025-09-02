@@ -25,9 +25,7 @@ export class FuncionariosService {
     return this.http.get<IFuncionario[]>(`${this.apiUrl}/inativos`).pipe(
       catchError((error) => {
         console.error('Error fetching inactive funcionarios:', error);
-        return throwError(
-          () => new Error('Failed to fetch inactive employees')
-        );
+        return throwError(() => new Error('Failed to fetch inactive employees'));
       })
     );
   }
@@ -36,36 +34,25 @@ export class FuncionariosService {
     return this.http.get<IFuncionario>(`${this.apiUrl}/${id}`).pipe(
       catchError((error) => {
         console.error(`Error fetching funcionario with id ${id}:`, error);
-        return throwError(
-          () => new Error(`Failed to fetch employee with id ${id}`)
-        );
+        return throwError(() => new Error(`Failed to fetch employee with id ${id}`));
       })
     );
   }
 
-  updateFuncionario(
-    id: string,
-    funcionario: IFuncionario
-  ): Observable<IFuncionario> {
-    return this.http
-      .put<IFuncionario>(`${this.apiUrl}/${id}`, funcionario)
-      .pipe(
-        catchError((error) => {
-          console.error(`Error updating funcionario with id ${id}:`, error);
-          return throwError(
-            () => new Error(`Failed to update employee with id ${id}`)
-          );
-        })
-      );
+  updateFuncionario(id: string, formData: FormData): Observable<IFuncionario> {
+    return this.http.put<IFuncionario>(`${this.apiUrl}/${id}`, formData).pipe(
+      catchError((error) => {
+        console.error(`Error updating funcionario with id ${id}:`, error);
+        return throwError(() => new Error(`Failed to update employee with id ${id}`));
+      })
+    );
   }
 
   deleteFuncionario(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`).pipe(
       catchError((error) => {
         console.error(`Error deleting funcionario with id ${id}:`, error);
-        return throwError(
-          () => new Error(`Failed to delete employee with id ${id}`)
-        );
+        return throwError(() => new Error(`Failed to delete employee with id ${id}`));
       })
     );
   }
