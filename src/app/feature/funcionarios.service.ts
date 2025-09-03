@@ -57,8 +57,8 @@ export class FuncionariosService {
     );
   }
 
-  createFuncionario(formData: FormData): Observable<IFuncionario> {
-    return this.http.post<IFuncionario>(this.apiUrl, formData).pipe(
+createFuncionario(formData: FormData): Observable<{ message: string; funcionario: IFuncionario }> {
+    return this.http.post<{ message: string; funcionario: IFuncionario }>(this.apiUrl, formData).pipe(
       catchError((error) => {
         console.error('Error creating funcionario:', error);
         return throwError(() => new Error('Failed to create employee'));
