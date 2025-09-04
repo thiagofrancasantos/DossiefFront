@@ -74,50 +74,79 @@ export class NovoFuncionarioComponent {
   }
 
   onFileChange(event: any, index: number): void {
-    const file = event.target.files[0];
-    if (file) {
-      console.log('File selected:', file.name, 'for index:', index);
-      this.documentos.at(index).patchValue({ arquivo: file });
-    } else {
-      console.log('No file selected for index:', index);
-    }
+  const file = event.target.files[0];
+  const documentoControl = this.documentos.at(index);
+  if (file) {
+    console.log(`File selected: ${file.name} for index: ${index}`);
+    documentoControl.get('arquivo')?.setValue(file);
+    documentoControl.get('arquivo')?.markAsTouched();
+    documentoControl.get('arquivo')?.updateValueAndValidity();
+  } else {
+    console.warn(`Nenhum arquivo selecionado no índice ${index}`);
+    documentoControl.get('arquivo')?.setValue(null);
+    documentoControl.get('arquivo')?.markAsTouched();
+    documentoControl.get('arquivo')?.updateValueAndValidity();
+  }
+  console.log(`Estado do documento ${index}:`, documentoControl.value);
+}
+
+  createFuncionario(): void {
+  if (this.funcionarioForm.invalid) {
+    this.funcionarioForm.markAllAsTouched();
+    console.log('Formulário inválido:', this.funcionarioForm.errors);
+    console.log('Estado do FormArray documentos:', this.documentos.controls.map(c => c.value));
+    this.errorMessage = 'Por favor, preencha todos os campos obrigatórios.';
+    return;
   }
 
-createFuncionario(): void {
-    if (this.funcionarioForm.valid) {
-      const formData = new FormData();
-      formData.append('Nome', this.funcionarioForm.value.nome);
-      formData.append('Matricula', this.funcionarioForm.value.matricula);
-      formData.append('Telefone', this.funcionarioForm.value.telefone);
-      formData.append('Status', this.funcionarioForm.value.status);
-      this.funcionarioForm.value.documentos.forEach((doc: any) => {
-        if (doc.arquivo && doc.categoria) {
-          console.log('Appending file:', doc.arquivo.name, 'with category:', doc.categoria);
-          formData.append('Arquivos', doc.arquivo);
-          formData.append('Categorias', doc.categoria); // Envia como string (ex.: "Treinamento")
-        }
-      });
+  const formData = new FormData();
+  formData.append('Nome', this.funcionarioForm.get('nome')?.value);
+  formData.append('Matricula', this.funcionarioForm.get('matricula')?.value);
+  formData.append('Telefone', this.funcionarioForm.get('telefone')?.value);
+  formData.append('Status', this.funcionarioForm.get('status')?.value);
 
-      console.log('FormData enviado:');
-      formData.forEach((value, key) => {
-        console.log(key, value);
-      });
+  // Adicionar documentos
+  let documentosValidos = true;
+  this.documentos.controls.forEach((doc, index) => {
+    const categoria = doc.get('categoria')?.value;
+    const arquivo = doc.get('arquivo')?.value;
 
-      this.funcionariosService.createFuncionario(formData).subscribe({
-        next: (response: { message: string; funcionario: IFuncionario }) => {
-          console.log('Funcionário criado:', response.funcionario);
-          this.router.navigate(['/funcionarios-ativos']);
-        },
-        error: (err: any) => {
-          console.error('Erro ao criar funcionário:', err);
-          this.errorMessage = err.error?.message || 'Não foi possível criar o funcionário.';
-        }
-      });
+    if (categoria && arquivo) {
+      console.log(`Appending file: ${arquivo.name} with category: ${categoria} at index: ${index}`);
+      formData.append('Arquivos', arquivo); // Usar 'Arquivos' sem indexação
+      formData.append('Categorias', categoria); // Usar 'Categorias' sem indexação
     } else {
-      this.errorMessage = 'Por favor, preencha todos os campos obrigatórios.';
-      this.funcionarioForm.markAllAsTouched();
+      console.warn(`Documento inválido no índice ${index}: categoria=${categoria}, arquivo=${arquivo ? arquivo.name : 'null'}`);
+      documentosValidos = false;
     }
+  });
+
+  if (!documentosValidos && this.documentos.length > 0) {
+    console.error('Um ou mais documentos estão incompletos. Verifique os campos categoria e arquivo.');
+    this.errorMessage = 'Todos os documentos devem ter categoria e arquivo preenchidos.';
+    return;
   }
+
+  // Logar o conteúdo do FormData
+  console.log('FormData enviado:');
+  for (const pair of (formData as any).entries()) {
+    console.log(`${pair[0]}: ${pair[1]?.name || pair[1]}`);
+  }
+
+  this.funcionariosService.createFuncionario(formData).subscribe({
+    next: (response) => {
+      console.log('Funcionário criado com sucesso:', response);
+      this.funcionarioForm.reset();
+      this.documentos.clear();
+      this.errorMessage = null;
+    },
+    error: (error) => {
+      console.error('Erro ao criar funcionário:', error);
+      this.errorMessage = error.error?.message || 'Erro ao criar funcionário';
+      console.log('Detalhes do erro:', error.error);
+    },
+  });
+}
 
   cancel(): void {
     this.router.navigate(['/funcionarios-ativos']);

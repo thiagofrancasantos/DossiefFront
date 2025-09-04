@@ -86,19 +86,19 @@
               </small>
             </div>
 
-            <div style="margin-bottom: 10px;">
-              <label [for]="'arquivo' + i" style="display: block; margin-bottom: 5px;">Arquivo:</label>
-              <input type="file" [id]="'arquivo' + i" (change)="onFileChange($event, i)" />
-              <small *ngIf="doc.get('arquivo')?.touched && doc.get('arquivo')?.errors?.['required']" style="color: red; display: block; margin-top: 3px;">
-                Arquivo é obrigatório.
-              </small>
-              <small *ngIf="doc.get('nomeArquivo')?.value" style="display: block; margin-top: 3px; color: #666;">
-                Arquivo atual: 
-                <a [href]="doc.get('url')?.value" target="_blank" style="color: #007bff; text-decoration: underline;">
-                  {{ doc.get('nomeArquivo')?.value }}
-                </a>
-              </small>
-            </div>
+<div style="margin-bottom: 10px;">
+  <label [for]="'arquivo' + i" style="display: block; margin-bottom: 5px;">Arquivo:</label>
+  <input type="file" [id]="'arquivo' + i" (change)="onFileChange($event, i)" />
+  <small *ngIf="doc.get('arquivo')?.touched && doc.get('arquivo')?.errors?.['required']" style="color: red; display: block; margin-top: 3px;">
+    Arquivo é obrigatório.
+  </small>
+  <small *ngIf="doc.get('nomeArquivo')?.value" style="display: block; margin-top: 3px; color: #666;">
+    Arquivo atual: 
+    <a [href]="getDocumentoUrl(doc.get('url')?.value)" target="_blank" style="color: #007bff; text-decoration: underline;">
+      {{ doc.get('nomeArquivo')?.value }}
+    </a>
+  </small>
+</div>
 
             <div style="display: flex; justify-content: center;">
               <p-button type="button" [raised]="true" severity="danger" label="Remover" icon="pi pi-trash" 

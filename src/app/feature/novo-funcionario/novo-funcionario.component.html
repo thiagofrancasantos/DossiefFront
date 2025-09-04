@@ -75,38 +75,39 @@
 
 
      <h3 style="text-align: center; margin-bottom: 10px;">Documentos</h3>
-     <div formArrayName="documentos" style="align-items: center; justify-content: center; text-align: center;">
-          <div *ngFor="let doc of documentos.controls; let i = index" [formGroupName]="i"
-               style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 6px;">
+<div formArrayName="documentos" style="align-items: center; justify-content: center; text-align: center;">
+  <div *ngFor="let doc of documentos.controls; let i = index" [formGroupName]="i"
+       style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 6px;">
+    <!-- Categoria -->
+    <div style="margin-bottom: 10px;">
+      <label [for]="'categoria' + i" style="display: block; margin-bottom: 5px;">Categoria:</label>
+      <select [id]="'categoria' + i" formControlName="categoria" 
+              style="width: 350px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px;">
+        <option value="" disabled selected>Selecione uma categoria</option>
+        <option value="Treinamento">Treinamento</option>
+        <option value="Integracao">Integracao</option>
+        <option value="Historico">Historico</option>
+      </select>
+      <small *ngIf="doc.get('categoria')?.touched && doc.get('categoria')?.errors?.['required']" 
+             style="color: red; display: block; margin-top: 3px;">
+        Categoria é obrigatória.
+      </small>
+    </div>
 
-               <div style="margin-bottom: 10px;">
-                    <label [for]="'categoria' + i" style="display: block; margin-bottom: 5px;">Categoria:</label>
-                    <select [id]="'categoria' + i" formControlName="categoria" 
-                         style="width: 350px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px;">
-                    <option value="" disabled selected>Selecione uma categoria</option>
-                    <option *ngFor="let option of categoriasOptions" [value]="option.value">
-                         {{ option.label }}
-                    </option>
-                    </select>
-        
-          <small *ngIf="doc.get('categoria')?.touched && doc.get('categoria')?.errors?.['required']" style="color: red; display: block; margin-top: 3px;">
-               Categoria é obrigatória.
-          </small>
-     </div>
+    <!-- Arquivo -->
+    <div style="margin-bottom: 10px;">
+      <label [for]="'arquivo' + i" style="display: block; margin-bottom: 5px;">Arquivo:</label>
+      <input type="file" [id]="'arquivo' + i" (change)="onFileChange($event, i)" />
+      <small *ngIf="doc.get('arquivo')?.touched && doc.get('arquivo')?.errors?.['required']" 
+             style="color: red; display: block; margin-top: 3px;">
+        Arquivo é obrigatório.
+      </small>
+    </div>
 
-      <div style="margin-bottom: 10px;">
-        <label [for]="'arquivo' + i" style="display: block; margin-bottom: 5px;">Arquivo:</label>
-        <input type="file" [id]="'arquivo' + i" (change)="onFileChange($event, i)" />
-        <small *ngIf="doc.get('arquivo')?.touched && doc.get('arquivo')?.errors?.['required']" style="color: red">
-          Arquivo é obrigatório.
-        </small>
-      </div>
-
-    
-            <p-button type="button" [raised]="true" severity="danger" label="Remover" icon="pi pi-trash"
-                    class="p-button-danger" (click)="removeDocumento(i)"></p-button>
-          </div>
-        </div>
+    <p-button type="button" [raised]="true" severity="danger" label="Remover" icon="pi pi-trash"
+              class="p-button-danger" (click)="removeDocumento(i)"></p-button>
+  </div>
+</div>
 
         <div style="display: flex; justify-content: center; align-items: center;">
           <p-button label="Adicionar Documento" [raised]="true" severity="info" icon="pi pi-plus" (click)="addDocumento()"/>

@@ -19,6 +19,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { FuncionariosService } from '../funcionarios.service';
 import { IFuncionario } from '../models/IFuncionario';
+import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-edit-funcionario',
@@ -46,11 +47,14 @@ export class EditFuncionarioComponent implements OnInit {
     { label: 'Histórico', value: 'Historico' },
   ];
 
+  private apiUrl = 'http://localhost:5261'; // URL base do backend
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private funcionariosService: FuncionariosService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private sanitizer: DomSanitizer // Injetar DomSanitizer
   ) {
     this.funcionarioForm = this.fb.group({
       nome: ['', Validators.required],
@@ -130,6 +134,16 @@ export class EditFuncionarioComponent implements OnInit {
     } else {
       console.log('Nenhum arquivo selecionado para o índice:', index);
     }
+  }
+
+getDocumentoUrl(url: string): SafeUrl {
+    if (!url) {
+      console.warn('URL do documento está vazia ou nula');
+      return '';
+    }
+    const fullUrl = url.startsWith('http') ? url : `${this.apiUrl}${url}`;
+    console.log(`Generated document URL: ${fullUrl}`);
+    return this.sanitizer.bypassSecurityTrustUrl(fullUrl); // Sanitizar a URL
   }
 
   saveFuncionario(): void {
