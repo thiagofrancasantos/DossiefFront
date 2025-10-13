@@ -94,9 +94,18 @@
   </small>
   <small *ngIf="doc.get('nomeArquivo')?.value" style="display: block; margin-top: 3px; color: #666;">
     Arquivo atual: 
-    <a [href]="getDocumentoUrl(doc.get('url')?.value)" target="_blank" style="color: #007bff; text-decoration: underline;">
-      {{ doc.get('nomeArquivo')?.value }}
-    </a>
+<!-- <a
+  [href]="getDocumentoUrl(funcionario?.funcionarioId || '', doc.get('documentoId')?.value)"
+  target="_blank"
+  style="color: #007bff; text-decoration: underline;"
+>
+  {{ doc.get('nomeArquivo')?.value }}
+</a> -->
+
+<button type="button" (click)="openDocumento(funcionario?.funcionarioId || '', doc.get('documentoId')?.value)">
+  {{ doc.get('nomeArquivo')?.value }}
+</button>
+
   </small>
 </div>
 

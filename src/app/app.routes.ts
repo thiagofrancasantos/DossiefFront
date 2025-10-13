@@ -4,6 +4,8 @@ import { FuncionariosAtivosComponent } from './feature/funcionarios-ativos/funci
 import { FuncionariosInativosComponent } from './feature/funcionarios-inativos/funcionarios-inativos.component';
 import { EditFuncionarioComponent } from './feature/edit-funcionario/edit-funcionario.component';
 import { NovoFuncionarioComponent } from './feature/novo-funcionario/novo-funcionario.component';
+import { HistoricoComponent } from './feature/historico/historico.component';
+import { FuncionariosSuspensosComponent } from './feature/funcionarios-suspensos/funcionarios-suspensos.component';
 
 export const routes: Routes = [
   {
@@ -23,6 +25,10 @@ export const routes: Routes = [
     component: FuncionariosInativosComponent,
   },
   {
+    path: 'funcionarios-suspensos',
+    component: FuncionariosSuspensosComponent
+  },
+  {
     path: 'edit-funcionario/:id',
     component: EditFuncionarioComponent,
   },
@@ -30,4 +36,8 @@ export const routes: Routes = [
     path: 'novo-funcionario',
     component: NovoFuncionarioComponent,
   },
+  {
+    path: 'historico',
+    component: HistoricoComponent
+  }
 ];

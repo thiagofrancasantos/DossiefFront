@@ -62,9 +62,9 @@ export class NavbarComponent implements OnInit{
         routerLink: '/'
       },
       {
-        label: 'Historico',
-        icon: 'pi pi-info-circle',
-        routerLink: '/sobre'
+        label: 'Novo Funcionario',
+        icon: 'pi pi-user',
+        routerLink: '/novo-funcionario'
       },
       {
         label: 'Status',

@@ -30,6 +30,15 @@ export class FuncionariosService {
     );
   }
 
+  getFuncionariosSuspensos(): Observable<IFuncionario[]> {
+        return this.http.get<IFuncionario[]>(`${this.apiUrl}/suspensos`).pipe(
+      catchError((error) => {
+        console.error('Error fetching inactive funcionarios:', error);
+        return throwError(() => new Error('Failed to fetch inactive employees'));
+      })
+    );
+  }
+
   getFuncionarioById(id: string): Observable<IFuncionario> {
     return this.http.get<IFuncionario>(`${this.apiUrl}/${id}`).pipe(
       catchError((error) => {
@@ -65,4 +74,12 @@ createFuncionario(formData: FormData): Observable<{ message: string; funcionario
       })
     );
   }
+  // funcionarios.service.ts
+getDocumentoBlob(funcionarioId: string, documentoId: string) {
+  const url = `${this.apiUrl}/${funcionarioId}/documento/${documentoId}`;
+  // 👇 o 'as 'json'' estava incorreto — muda pra tipo genérico <Blob>
+  return this.http.get<Blob>(url, { responseType: 'blob' as 'json' });
+}
+
+
 }

@@ -1,1 +1,57 @@
-<p>funcionarios-suspensos works!</p>
+<div class="container" style="padding: 20px">
+  <h2 style="color: #666666; margin: 30px 0 20px 0">Funcionários Ativos</h2>
+
+  <div style="display: flex; justify-content: flex-start; padding: 2rem 0">
+    <p-autoComplete
+      [(ngModel)]="selectedItems"
+      [suggestions]="items"
+      (completeMethod)="search($event)"
+      [field]="'nome'"
+      [multiple]="true"
+      [minLength]="0"
+      placeholder="Digite o nome"
+      [style]="{ width: '50vw', 'min-width': '300px' }"
+      [inputStyle]="{ width: '100%' }"
+    ></p-autoComplete>
+  </div>
+
+  <p-table
+    [value]="filteredFuncionarios"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [lazy]="false"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} registros"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 20%">Nome</th>
+        <th style="width: 20%">Matrícula</th>
+        <th style="width: 20%">Telefone</th>
+        <th style="width: 20%">Status</th>
+        <th style="width: 20%">Editar</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-funcionario>
+      <tr>
+        <td>{{ funcionario.nome }}</td>
+        <td>{{ funcionario.matricula }}</td>
+        <td>{{ funcionario.telefone }}</td>
+        <td>{{ funcionario.status }}</td>
+        <td>
+          <button
+            pButton
+            type="button"
+            class="p-button-text"
+            icon="pi pi-pen-to-square"
+            (click)="editFuncionario(funcionario.funcionarioId)"
+          >
+            >
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

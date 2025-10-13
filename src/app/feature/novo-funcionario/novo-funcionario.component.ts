@@ -33,11 +33,12 @@ import { IFuncionario } from '../models/IFuncionario';
 })
 export class NovoFuncionarioComponent {
   funcionarioForm: FormGroup;
-  categoriasOptions = [
-    { label: 'Treinamento', value: 'Treinamento' },
-    { label: 'Integração', value: 'Integracao' },
-    { label: 'Histórico', value: 'Historico' },
-  ];
+categoriasOptions = [
+  { label: 'Treinamento', value: 'Treinamento' },
+  { label: 'Integracao', value: 'Integracao' },
+  { label: 'Histórico', value: 'Historico' },
+];
+
 
 
   errorMessage: string | null = null;
@@ -113,8 +114,8 @@ export class NovoFuncionarioComponent {
 
     if (categoria && arquivo) {
       console.log(`Appending file: ${arquivo.name} with category: ${categoria} at index: ${index}`);
-      formData.append('Arquivos', arquivo); // Usar 'Arquivos' sem indexação
-      formData.append('Categorias', categoria); // Usar 'Categorias' sem indexação
+      formData.append('Arquivos', arquivo);
+      formData.append('Categorias', categoria); 
     } else {
       console.warn(`Documento inválido no índice ${index}: categoria=${categoria}, arquivo=${arquivo ? arquivo.name : 'null'}`);
       documentosValidos = false;
@@ -127,7 +128,7 @@ export class NovoFuncionarioComponent {
     return;
   }
 
-  // Logar o conteúdo do FormData
+ 
   console.log('FormData enviado:');
   for (const pair of (formData as any).entries()) {
     console.log(`${pair[0]}: ${pair[1]?.name || pair[1]}`);

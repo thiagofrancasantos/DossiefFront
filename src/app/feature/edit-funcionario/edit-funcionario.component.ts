@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 
-// PrimeNG
+
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
@@ -47,14 +47,14 @@ export class EditFuncionarioComponent implements OnInit {
     { label: 'Histórico', value: 'Historico' },
   ];
 
-  private apiUrl = 'http://localhost:5261'; // URL base do backend
+  private apiUrl = 'http://localhost:5261'; 
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private funcionariosService: FuncionariosService,
     private fb: FormBuilder,
-    private sanitizer: DomSanitizer // Injetar DomSanitizer
+    private sanitizer: DomSanitizer
   ) {
     this.funcionarioForm = this.fb.group({
       nome: ['', Validators.required],
@@ -136,15 +136,11 @@ export class EditFuncionarioComponent implements OnInit {
     }
   }
 
-getDocumentoUrl(url: string): SafeUrl {
-    if (!url) {
-      console.warn('URL do documento está vazia ou nula');
-      return '';
-    }
-    const fullUrl = url.startsWith('http') ? url : `${this.apiUrl}${url}`;
-    console.log(`Generated document URL: ${fullUrl}`);
-    return this.sanitizer.bypassSecurityTrustUrl(fullUrl); // Sanitizar a URL
-  }
+getDocumentoUrl(funcionarioId: string, documentoId: string): SafeUrl {
+  const url = `${this.apiUrl}/api/Funcionarios/${funcionarioId}/documento/${documentoId}`;
+  return this.sanitizer.bypassSecurityTrustUrl(url);
+}
+
 
   saveFuncionario(): void {
     if (this.funcionarioForm.valid && this.funcionario) {
@@ -196,6 +192,22 @@ getDocumentoUrl(url: string): SafeUrl {
       });
     }
   }
+  openDocumento(funcionarioId: string, documentoId: string) {
+  this.funcionariosService.getDocumentoBlob(funcionarioId, documentoId).subscribe({
+    next: (blob: Blob) => {
+      const fileURL = URL.createObjectURL(blob);
+      window.open(fileURL, '_blank'); // abre em nova aba
+      // opcional: liberar o objeto depois de um tempo
+      setTimeout(() => URL.revokeObjectURL(fileURL), 10000);
+    },
+    error: (err) => {
+      console.error('Erro ao baixar documento:', err);
+      this.errorMessage = 'Erro ao abrir o documento.';
+    }
+  });
+}
+
+  
 
   goBack(): void {
     this.router.navigate(['/funcionarios-ativos']);
