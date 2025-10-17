@@ -20,6 +20,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FuncionariosService } from '../funcionarios.service';
 import { IFuncionario } from '../models/IFuncionario';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
+import { NavbarComponent } from "../../core/components/navbar/navbar.component";
 
 @Component({
   selector: 'app-edit-funcionario',
@@ -33,7 +34,8 @@ import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
     MessageModule,
     DropdownModule,
     ProgressSpinnerModule,
-  ],
+    NavbarComponent
+],
   templateUrl: './edit-funcionario.component.html',
   styleUrls: ['./edit-funcionario.component.scss'],
 })

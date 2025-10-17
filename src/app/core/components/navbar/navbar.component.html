@@ -1,105 +1,31 @@
-<p-menubar class="custom-menubar" [model]="items" size="large">
-    <ng-template pTemplate="start">
-        <a routerLink="">
-            <img src="../../../../assets/images/logo_jabil.png" alt="logo_jabil" width="100px" style="padding: 1px;" >
-        </a>
-        <svg width="33" height="35" viewBox="0 0 33 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="..." fill="var(--primary-color)" />
-            <mask id="mask0_1_36" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="31" height="33">
-                <path d="..." fill="var(--primary-color-text)" />
-            </mask>
-            <g mask="url(#mask0_1_36)">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="..." />
-            </g>
-            <path d="..." fill="var(--primary-color-text)" />
-            <path d="..." fill="var(--primary-color-text)" />
-            <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="..."
-                fill="var(--primary-color-text)"
-            />
-            <path d="..." fill="var(--primary-color-text)" />
-            <path d="..." fill="var(--primary-color-text)" />
-            <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="..."
-                fill="var(--primary-color-text)"
-            />
-            <path d="..." fill="var(--primary-color-text)" />
-            <path d="..." fill="var(--primary-color-text)" />
-            <path d="..." fill="var(--primary-color-text)" />
-            <path d="..." fill="var(--primary-color-text)" />
-        </svg>
-    </ng-template>
-<ng-template pTemplate="item" let-item let-root="root">
-    <a
-      pRipple
-      class="flex align-items-center p-menuitem-link"
-      [routerLink]="item.routerLink"
-      [queryParams]="item.queryParams"
-      [routerLinkActive]="'active-route'"
-    >
-        <span [class]="item.icon"></span>
-        <span class="ml-2">{{ item.label }}</span>
-        <p-badge *ngIf="item.badge" [ngClass]="{ 'ml-auto': !root, 'ml-2': root }" [value]="item.badge" />
-        <span *ngIf="item.shortcut" class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1"></span> <span>{{ item.shortcut }}</span>
-        <i *ngIf="item.items" [ngClass]="['pi', root ? 'pi-angle-down ml-2' : 'pi-angle-right ml-auto']"></i>
+<p-menubar class="custom-menubar" [model]="items">
+  <ng-template pTemplate="start">
+    <a routerLink="">
+      <img src="../../../../assets/images/logo_jabil.png" alt="logo_jabil" width="100px" style="padding: 1px;">
     </a>
-</ng-template>
+  </ng-template>
 
-    <!-- Botão com avatar do usuário -->
+  <ng-template pTemplate="end">
+    <!-- Botão de Logout direto -->
     <p-button
-        [text]="true"
-        [plain]="true"
-        (click)="userActions.toggle($event);"
-    >
-        <p-avatar
-            [style]="{ border: '2px solid #0990CF' }"
-            shape="circle"
-            [label]="halfName"
-        />
-    </p-button>
-
-    
-    <ng-container *ngIf="searchTemplate">
-        <ng-template pTemplate="end">
-            <div class="flex align-items-center gap-2">
-                <input type="text" pInputText placeholder="Search" class="custom-input" />
-                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
-            </div>
-        </ng-template>
-    </ng-container>
+      label="Logout"
+      icon="pi pi-sign-out"
+      (click)="handleLogout()"
+      class="p-button-text p-button-plain ml-2"
+    ></p-button>
+  </ng-template>
 </p-menubar>
 
-
-<!-- Overlay com informações do usuário -->
+<!-- Overlay do usuário com apenas botão logout -->
 <p-overlayPanel #userActions>
-  <div class="flex flex-column align-items-center w-18rem p-4">
-    <p-image src="./assets/icon/logo.svg" alt="Logo" class="mb-4" [style]="{ width: '3rem', height: '3rem' }" />
-
-    <p-avatar
-      [label]="halfName"
-      styleClass="mb-4"
-      shape="circle"
-      size="xlarge"
-      [style]="{ width: '4rem', height: '4rem' }"
-    />
-
-    <span class="font-bold text-900 mb-1">{{ nameUse }}</span>
-    <span class="text-600 mb-3">Perfil: {{ profile }}</span>
-    <span class="text-600 mb-3">Setor: {{ sectorName }}</span>
-
-    <hr class="w-full mt-3 mb-3">
-
-    <button  
+  <div class="flex flex-column p-2">
+    <button
+      pButton
+      type="button"
+      label="Logout"
+      icon="pi pi-sign-out"
+      class="p-button-text p-button-plain w-full"
       (click)="handleLogout()"
-      class="flex align-items-center justify-content-between w-full p-2 border-none bg-transparent cursor-pointer"
-      [style]="{ 'color': '#6c757d' }">
-      <span>Sair</span>
-      <i class="pi pi-sign-out"></i>
-    </button>
+    ></button>
   </div>
 </p-overlayPanel>
-

@@ -1,0 +1,44 @@
+.landing-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  text-align: center;
+  padding: 2rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #333;
+}
+
+input {
+  padding: 0.7rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+
+.custom-card {
+  width: 450px;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+  background: #fff;
+}

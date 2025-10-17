@@ -37,7 +37,7 @@ export class NavbarComponent implements OnInit{
   profile :string = "Administrador";
   sectorName: string = "P&D";
 
-  overlayVisible = false;
+  overlayVisible = true;
 
   constructor(private router: Router) {}
 
@@ -52,7 +52,7 @@ export class NavbarComponent implements OnInit{
 
   handleLogout(): void {
     console.log('Logout simulado');
-    this.router.navigate(['/funcionarios-ativos']);
+    this.router.navigate(['']);
   }
 
       items: MenuItem[] = [

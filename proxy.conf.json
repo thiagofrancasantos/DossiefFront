@@ -1,0 +1,8 @@
+{
+  "/jadmapi": {
+    "target": "http://brmanm1appc1",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

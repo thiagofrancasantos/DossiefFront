@@ -6,11 +6,12 @@ import { EditFuncionarioComponent } from './feature/edit-funcionario/edit-funcio
 import { NovoFuncionarioComponent } from './feature/novo-funcionario/novo-funcionario.component';
 import { HistoricoComponent } from './feature/historico/historico.component';
 import { FuncionariosSuspensosComponent } from './feature/funcionarios-suspensos/funcionarios-suspensos.component';
+import { LandingPageComponent } from './feature/landing-page/landing-page.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: LandingPageComponent,
   },
   {
     path: 'home',

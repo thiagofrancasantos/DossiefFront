@@ -14,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FuncionariosService } from '../funcionarios.service';
 import { DropdownModule } from "primeng/dropdown";
 import { IFuncionario } from '../models/IFuncionario';
+import { NavbarComponent } from "../../core/components/navbar/navbar.component";
 
 
 
@@ -26,7 +27,8 @@ import { IFuncionario } from '../models/IFuncionario';
     FormsModule,
     ButtonModule,
     InputTextModule,
-    DropdownModule
+    DropdownModule,
+    NavbarComponent
 ],
   templateUrl: './novo-funcionario.component.html',
   styleUrls: ['./novo-funcionario.component.scss'],

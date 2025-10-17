@@ -9,17 +9,19 @@ import { FuncionariosService } from '../funcionarios.service';
 import { IFuncionario } from '../models/IFuncionario';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { NavbarComponent } from "../../core/components/navbar/navbar.component";
 
 @Component({
   selector: 'app-funcionarios-suspensos',
   standalone: true,
   imports: [
-        TableModule,
-        AutoCompleteModule,
-        FormsModule,
-        CommonModule,
-        ButtonModule,
-  ],
+    TableModule,
+    AutoCompleteModule,
+    FormsModule,
+    CommonModule,
+    ButtonModule,
+    NavbarComponent
+],
   templateUrl: './funcionarios-suspensos.component.html',
   styleUrl: './funcionarios-suspensos.component.scss'
 })

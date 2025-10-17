@@ -71,14 +71,15 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "DossieFront:build:production"
-            },
-            "development": {
-              "buildTarget": "DossieFront:build:development"
-            }
+            "buildTarget": "DossieFront:build:production"
           },
-          "defaultConfiguration": "development"
-        },
+        "development": {
+        "buildTarget": "DossieFront:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+      },
+
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {

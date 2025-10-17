@@ -9,6 +9,7 @@ import { FuncionariosService } from '../funcionarios.service';
 import { IFuncionario } from '../models/IFuncionario';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { NavbarComponent } from "../../core/components/navbar/navbar.component";
 
 @Component({
   selector: 'app-funcionarios-ativos',
@@ -19,7 +20,8 @@ import { filter } from 'rxjs/operators';
     FormsModule,
     CommonModule,
     ButtonModule,
-  ],
+    NavbarComponent
+],
   templateUrl: './funcionarios-ativos.component.html',
   styleUrl: './funcionarios-ativos.component.scss',
 })
