@@ -59,7 +59,7 @@ export class NavbarComponent implements OnInit{
       {
         label: 'Home',
         icon: 'pi pi-home',
-        routerLink: '/'
+        routerLink: '/home'
       },
       {
         label: 'Novo Funcionario',
