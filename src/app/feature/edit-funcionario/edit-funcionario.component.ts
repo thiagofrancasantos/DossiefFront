@@ -199,7 +199,6 @@ getDocumentoUrl(funcionarioId: string, documentoId: string): SafeUrl {
     next: (blob: Blob) => {
       const fileURL = URL.createObjectURL(blob);
       window.open(fileURL, '_blank'); // abre em nova aba
-      // opcional: liberar o objeto depois de um tempo
       setTimeout(() => URL.revokeObjectURL(fileURL), 10000);
     },
     error: (err) => {

@@ -3,7 +3,6 @@
     <h2>Dossiê</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-      <!-- Login -->
       <div class="form-group">
         <label for="username">Login</label>
         <input
@@ -18,7 +17,6 @@
         </small>
       </div>
 
-      <!-- Senha com olhinho padrão simples -->
       <div class="form-group password-group">
         <label for="password">Senha</label>
         <input
@@ -35,12 +33,10 @@
         </small>
       </div>
 
-      <!-- Login Error -->
       <small class="login-error" *ngIf="loginError">
         Credenciais inválidas. Tente novamente.
       </small>
 
-      <!-- Botão -->
       <button type="submit" [disabled]="form.invalid || loading" class="login-button">
         {{ loading ? 'Carregando...' : 'Entrar' }}
       </button>

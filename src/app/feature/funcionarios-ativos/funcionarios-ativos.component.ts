@@ -36,7 +36,6 @@ export class FuncionariosAtivosComponent implements OnInit {
     private funcionariosAtivosService: FuncionariosService,
     private router: Router
   ) {
-    // Recarrega a lista quando a navegação para /funcionarios-ativos ocorre
     this.router.events
       .pipe(
         filter(

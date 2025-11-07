@@ -67,7 +67,6 @@ export class LandingPageComponent {
           console.error('Erro de login:', error);
           this.loginError = true;
 
-          // mensagens customizadas caso existam
           if (error.message === 'invalid-email') {
             this.msg = 'Usuário não encontrado';
             this.msgTtile = 'O email inserido não está registrado.';

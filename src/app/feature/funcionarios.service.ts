@@ -3,12 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { IFuncionario } from './models/IFuncionario';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FuncionariosService {
   private apiUrl = 'http://localhost:5261/api/Funcionarios';
+
+  // private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -74,12 +77,10 @@ createFuncionario(formData: FormData): Observable<{ message: string; funcionario
       })
     );
   }
-  // funcionarios.service.ts
+
 getDocumentoBlob(funcionarioId: string, documentoId: string) {
   const url = `${this.apiUrl}/${funcionarioId}/documento/${documentoId}`;
-  // 👇 o 'as 'json'' estava incorreto — muda pra tipo genérico <Blob>
   return this.http.get<Blob>(url, { responseType: 'blob' as 'json' });
 }
-
 
 }

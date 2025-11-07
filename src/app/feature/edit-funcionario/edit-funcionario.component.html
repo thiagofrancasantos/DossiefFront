@@ -6,25 +6,27 @@
     {{ errorMessage }}
   </div>
 
-  <div class="page-wrapper" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f7f7f7;">
-    <div class="form-container" style="padding: 20px; width: 500px; border-radius: 6px; background: #fff; box-shadow: 0 0 12px rgba(0, 0, 0, 0.1); margin-top: 8px;">
+  <div class="page-wrapper"
+    style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f7f7f7;">
+    <div class="form-container"
+      style="padding: 20px; width: 500px; border-radius: 6px; background: #fff; box-shadow: 0 0 12px rgba(0, 0, 0, 0.1); margin-top: 8px;">
 
       <div style="display: flex; text-align: center; justify-content: center;">
         <h2 style="color: #666666; padding: 3px; font-family: Arial, Helvetica, sans-serif;">Editar Funcionário</h2>
       </div>
 
       <hr>
-      
+
 
       <form [formGroup]="funcionarioForm" (ngSubmit)="saveFuncionario()">
 
         <div style="margin-bottom: 15px; display: flex; justify-content: center;">
           <div style="text-align: left;">
             <label for="nome" style="display: block; margin-bottom: 5px;">Nome:</label>
-            <input pInputText id="nome" formControlName="nome" 
-                   style="width: 350px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px;" />
-            <small *ngIf="funcionarioForm.get('nome')?.touched && funcionarioForm.get('nome')?.errors?.['required']" 
-                   style="color: red; display: block; margin-top: 3px;">
+            <input pInputText id="nome" formControlName="nome"
+              style="width: 350px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px;" />
+            <small *ngIf="funcionarioForm.get('nome')?.touched && funcionarioForm.get('nome')?.errors?.['required']"
+              style="color: red; display: block; margin-top: 3px;">
               Nome é obrigatório.
             </small>
           </div>
@@ -33,10 +35,11 @@
         <div style="margin-bottom: 15px; display: flex; justify-content: center;">
           <div style="text-align: left;">
             <label for="matricula" style="display: block; margin-bottom: 5px;">Matrícula:</label>
-            <input pInputText id="matricula" formControlName="matricula" 
-                   style="width: 350px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px;" />
-            <small *ngIf="funcionarioForm.get('matricula')?.touched && funcionarioForm.get('matricula')?.errors?.['required']" 
-                   style="color: red; display: block; margin-top: 3px;">
+            <input pInputText id="matricula" formControlName="matricula"
+              style="width: 350px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px;" />
+            <small
+              *ngIf="funcionarioForm.get('matricula')?.touched && funcionarioForm.get('matricula')?.errors?.['required']"
+              style="color: red; display: block; margin-top: 3px;">
               Matrícula é obrigatória.
             </small>
           </div>
@@ -45,10 +48,11 @@
         <div style="margin-bottom: 15px; display: flex; justify-content: center;">
           <div style="text-align: left;">
             <label for="telefone" style="display: block; margin-bottom: 5px;">Telefone:</label>
-            <input pInputText id="telefone" formControlName="telefone" 
-                   style="width: 350px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px;" />
-            <small *ngIf="funcionarioForm.get('telefone')?.touched && funcionarioForm.get('telefone')?.errors?.['required']" 
-                   style="color: red; display: block; margin-top: 3px;">
+            <input pInputText id="telefone" formControlName="telefone"
+              style="width: 350px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px;" />
+            <small
+              *ngIf="funcionarioForm.get('telefone')?.touched && funcionarioForm.get('telefone')?.errors?.['required']"
+              style="color: red; display: block; margin-top: 3px;">
               Telefone é obrigatório.
             </small>
           </div>
@@ -57,15 +61,15 @@
         <div style="margin-bottom: 15px; display: flex; justify-content: center;">
           <div style="text-align: left;">
             <label for="status" style="display: block; margin-bottom: 5px;">Status:</label>
-            <select id="status" formControlName="status" 
-                    style="width: 350px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; height: 40px;">
+            <select id="status" formControlName="status"
+              style="width: 350px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; height: 40px;">
               <option value="" disabled>Selecione o Status</option>
               <option value="Ativo">Ativo</option>
               <option value="Inativo">Inativo</option>
               <option value="Suspenso">Suspenso</option>
             </select>
-            <small *ngIf="funcionarioForm.get('status')?.touched && funcionarioForm.get('status')?.errors?.['required']" 
-                   style="color: red; display: block; margin-top: 3px;">
+            <small *ngIf="funcionarioForm.get('status')?.touched && funcionarioForm.get('status')?.errors?.['required']"
+              style="color: red; display: block; margin-top: 3px;">
               Status é obrigatório.
             </small>
           </div>
@@ -74,32 +78,33 @@
         <h3 style="text-align: center; margin-bottom: 10px;">Documentos</h3>
         <div formArrayName="documentos" style="align-items: center; justify-content: center; text-align: center;">
           <div *ngFor="let doc of documentos.controls; let i = index" [formGroupName]="i"
-               style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 6px; text-align: left;">
+            style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 6px; text-align: left;">
 
             <div style="margin-bottom: 10px;">
               <label [for]="'categoria' + i" style="display: block; margin-bottom: 5px;">Categoria:</label>
-              <select [id]="'categoria' + i" formControlName="categoria" 
-                      style="width: 100%; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px;">
+              <select [id]="'categoria' + i" formControlName="categoria"
+                style="width: 100%; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px;">
                 <option value="" disabled>Selecione uma categoria</option>
                 <option *ngFor="let option of categoriasOptions" [value]="option.value">
                   {{ option.label }}
                 </option>
               </select>
-              <small *ngIf="doc.get('categoria')?.touched && doc.get('categoria')?.errors?.['required']" 
-                     style="color: red; display: block; margin-top: 3px;">
+              <small *ngIf="doc.get('categoria')?.touched && doc.get('categoria')?.errors?.['required']"
+                style="color: red; display: block; margin-top: 3px;">
                 Categoria é obrigatória.
               </small>
             </div>
 
-<div style="margin-bottom: 10px;">
-  <label [for]="'arquivo' + i" style="display: block; margin-bottom: 5px;">Arquivo:</label>
-  <input type="file" [id]="'arquivo' + i" (change)="onFileChange($event, i)" />
-  <small *ngIf="doc.get('arquivo')?.touched && doc.get('arquivo')?.errors?.['required']" style="color: red; display: block; margin-top: 3px;">
-    Arquivo é obrigatório.
-  </small>
-  <small *ngIf="doc.get('nomeArquivo')?.value" style="display: block; margin-top: 3px; color: #666;">
-    Arquivo atual: 
-<!-- <a
+            <div style="margin-bottom: 10px;">
+              <label [for]="'arquivo' + i" style="display: block; margin-bottom: 5px;">Arquivo:</label>
+              <input type="file" [id]="'arquivo' + i" (change)="onFileChange($event, i)" />
+              <small *ngIf="doc.get('arquivo')?.touched && doc.get('arquivo')?.errors?.['required']"
+                style="color: red; display: block; margin-top: 3px;">
+                Arquivo é obrigatório.
+              </small>
+              <small *ngIf="doc.get('nomeArquivo')?.value" style="display: block; margin-top: 3px; color: #666;">
+                Arquivo atual:
+                <!-- <a
   [href]="getDocumentoUrl(funcionario?.funcionarioId || '', doc.get('documentoId')?.value)"
   target="_blank"
   style="color: #007bff; text-decoration: underline;"
@@ -107,28 +112,33 @@
   {{ doc.get('nomeArquivo')?.value }}
 </a> -->
 
-<button type="button" (click)="openDocumento(funcionario?.funcionarioId || '', doc.get('documentoId')?.value)">
-  {{ doc.get('nomeArquivo')?.value }}
-</button>
+                <button type="button"
+                  (click)="openDocumento(funcionario?.funcionarioId || '', doc.get('documentoId')?.value)">
+                  {{ doc.get('nomeArquivo')?.value }}
+                </button>
 
-  </small>
-</div>
+              </small>
+            </div>
 
             <div style="display: flex; justify-content: center;">
-              <p-button type="button" [raised]="true" severity="danger" label="Remover" icon="pi pi-trash" 
-                        class="p-button-danger" (click)="removeDocumento(i)" ></p-button>
+              <p-button type="button" [raised]="true" severity="danger" label="Remover" icon="pi pi-trash"
+                class="p-button-danger" (click)="removeDocumento(i)"></p-button>
             </div>
           </div>
         </div>
 
         <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
-          <p-button label="Adicionar Documento" [raised]="true" severity="info" icon="pi pi-plus" (click)="addDocumento()"></p-button>
+          <p-button label="Adicionar Documento" [raised]="true" severity="info" icon="pi pi-plus"
+            (click)="addDocumento()"></p-button>
         </div>
 
         <div style="margin-top: 20px; display: flex; justify-content: space-around;">
-          <p-button label="Salvar" [raised]="true" severity="success" icon="pi pi-check" [disabled]="!funcionarioForm.valid"></p-button>
-          <p-button label="Excluir" [raised]="true" severity="danger" icon="pi pi-trash" (click)="deleteFuncionario()"></p-button>
-          <p-button label="Voltar" [raised]="true" severity="secondary" icon="pi pi-arrow-left" (click)="goBack()"></p-button>
+          <p-button label="Salvar" [raised]="true" severity="success" icon="pi pi-check"
+            [disabled]="!funcionarioForm.valid"></p-button>
+          <p-button label="Excluir" [raised]="true" severity="danger" icon="pi pi-trash"
+            (click)="deleteFuncionario()"></p-button>
+          <p-button label="Voltar" [raised]="true" severity="secondary" icon="pi pi-arrow-left"
+            (click)="goBack()"></p-button>
         </div>
       </form>
     </div>

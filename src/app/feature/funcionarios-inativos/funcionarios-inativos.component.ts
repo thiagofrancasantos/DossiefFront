@@ -37,7 +37,6 @@ export class FuncionariosInativosComponent {
     private funcionariosAtivosService: FuncionariosService,
     private router: Router
   ) {
-    // Recarrega a lista quando a navegação para /funcionarios-inativos ocorre
     this.router.events
       .pipe(
         filter(

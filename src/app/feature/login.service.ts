@@ -7,7 +7,6 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class LoginService {
-  // endpoint relativo via proxy
   
   public apiUrl = environment.apiUrlAD;
 
@@ -15,7 +14,7 @@ export class LoginService {
   constructor(private http: HttpClient) {}
 
   login(credentials: any,  keepMeConnected: boolean = false): Observable<boolean> {
-    // A API retorna true ou false
+    // A API retorna true ou false daí valida ou n
     return this.http.post<boolean>(this.apiUrl, credentials);
   }
 }
