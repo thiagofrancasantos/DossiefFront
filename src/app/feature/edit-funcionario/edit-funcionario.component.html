@@ -75,8 +75,8 @@
           </div>
         </div>
 
-        <h3 style="text-align: center; margin-bottom: 10px;">Documentos</h3>
-        <div formArrayName="documentos" style="align-items: center; justify-content: center; text-align: center;">
+        <h3 *ngIf="editMode" style="text-align: center; margin-bottom: 10px;">Documentos</h3>
+        <div *ngIf="editMode" formArrayName="documentos" style="align-items: center; justify-content: center; text-align: center;">
           <div *ngFor="let doc of documentos.controls; let i = index" [formGroupName]="i"
             style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 6px; text-align: left;">
 
@@ -104,14 +104,6 @@
               </small>
               <small *ngIf="doc.get('nomeArquivo')?.value" style="display: block; margin-top: 3px; color: #666;">
                 Arquivo atual:
-                <!-- <a
-  [href]="getDocumentoUrl(funcionario?.funcionarioId || '', doc.get('documentoId')?.value)"
-  target="_blank"
-  style="color: #007bff; text-decoration: underline;"
->
-  {{ doc.get('nomeArquivo')?.value }}
-</a> -->
-
                 <button type="button"
                   (click)="openDocumento(funcionario?.funcionarioId || '', doc.get('documentoId')?.value)">
                   {{ doc.get('nomeArquivo')?.value }}
@@ -120,19 +112,24 @@
               </small>
             </div>
 
-            <div style="display: flex; justify-content: center;">
+            <div *ngIf="editMode" style="display: flex; justify-content: center;">
               <p-button type="button" [raised]="true" severity="danger" label="Remover" icon="pi pi-trash"
                 class="p-button-danger" (click)="removeDocumento(i)"></p-button>
             </div>
           </div>
         </div>
 
-        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+        <div *ngIf="editMode" style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
           <p-button label="Adicionar Documento" [raised]="true" severity="info" icon="pi pi-plus"
             (click)="addDocumento()"></p-button>
         </div>
+        
+        <div style="text-align: center; margin-bottom: 15px;" *ngIf="!editMode">
+          <p-button label="Editar Funcionário" icon="pi pi-pencil" (click)="enableEdit()"></p-button>
+        </div>
 
-        <div style="margin-top: 20px; display: flex; justify-content: space-around;">
+
+        <div *ngIf="editMode" style="margin-top: 20px; display: flex; justify-content: space-around;">
           <p-button label="Salvar" [raised]="true" severity="success" icon="pi pi-check"
             [disabled]="!funcionarioForm.valid"></p-button>
           <p-button label="Excluir" [raised]="true" severity="danger" icon="pi pi-trash"
@@ -144,3 +141,5 @@
     </div>
   </div>
 </div>
+
+

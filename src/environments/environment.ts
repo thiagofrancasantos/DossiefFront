@@ -3,6 +3,6 @@ export const environment = {
   apiUrlAD: 'http://brmanm0app41/RpaSamsungApi/api/Login',  
   // apiUrl: 'http://brmanm0app41/ApiDossie/api/Funcionarios',
   // apiUrl: 'http://localhost/ApiDossie/api/Funcionarios',
-  //apiUrl: 'http://localhost:5261',
+  // apiUrl: 'http://localhost:5261',
 
 }

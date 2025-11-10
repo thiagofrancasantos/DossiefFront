@@ -43,6 +43,8 @@ export class EditFuncionarioComponent implements OnInit {
   funcionario?: IFuncionario;
   errorMessage: string | null = null;
   funcionarioForm: FormGroup;
+  editMode: boolean = false;
+
   categoriasOptions = [
     { label: 'Treinamento', value: 'Treinamento' },
     { label: 'Integração', value: 'Integracao' },
@@ -99,6 +101,8 @@ export class EditFuncionarioComponent implements OnInit {
               })
             );
           });
+
+          this.funcionarioForm.disable();
         },
         error: () => {
           this.errorMessage = 'Não foi possível carregar os dados do funcionário.';
@@ -208,7 +212,22 @@ getDocumentoUrl(funcionarioId: string, documentoId: string): SafeUrl {
   });
 }
 
-  
+  enableEdit(): void {
+    this.editMode = true;
+    this.funcionarioForm.enable();
+  }
+
+  get documentosTreinamentos() {
+    return this.documentos.controls.filter(doc => doc.value.categoria === 'Treinamento');
+  }
+
+  get documentosIntegracao() {
+    return this.documentos.controls.filter(doc => doc.value.categoria === 'Integracao');
+  }
+
+  get documentosHistorico() {
+    return this.documentos.controls.filter(doc => doc.value.categoria === 'Historico');
+  }
 
   goBack(): void {
     this.router.navigate(['/funcionarios-ativos']);
