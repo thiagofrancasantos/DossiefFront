@@ -1,47 +1,126 @@
 <div class="login-container">
+
+  <!-- BG EFFECT -->
+  <div class="bg-circle circle-1"></div>
+  <div class="bg-circle circle-2"></div>
+
   <div class="login-card">
-    <h2>Dossiê</h2>
+
+    <!-- ICON -->
+    <div class="logo-wrapper">
+      <div class="logo-icon">
+        <i class="pi pi-folder"></i>
+      </div>
+
+      <h1>Dossiê</h1>
+
+      <p>
+        Sistema de gerenciamento de colaboradores e documentos
+      </p>
+    </div>
+
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
+      <!-- LOGIN -->
       <div class="form-group">
-        <label for="username">Login</label>
-        <input
-          type="text"
-          id="username"
-          placeholder="Ex: 1234567"
-          formControlName="username"
-          maxlength="7"
-        />
-        <small class="error" *ngIf="form.controls['username'].invalid && form.controls['username'].touched">
+
+        <label for="username">
+          Login
+        </label>
+
+        <div class="input-wrapper">
+
+          <i class="pi pi-user input-icon"></i>
+
+          <input
+            type="text"
+            id="username"
+            placeholder="Ex: 1234567"
+            formControlName="username"
+            maxlength="7"
+          />
+
+        </div>
+
+        <small
+          class="error"
+          *ngIf="form.controls['username'].invalid && form.controls['username'].touched"
+        >
           Login inválido.
         </small>
+
       </div>
 
-      <div class="form-group password-group">
-        <label for="password">Senha</label>
-        <input
-          [type]="showPassword ? 'text' : 'password'"
-          id="password"
-          placeholder="Digite sua senha"
-          formControlName="password"
-        />
-        <button type="button" class="toggle-password" (click)="showPassword = !showPassword">
-          <span class="eye-icon" [class.eye-closed]="showPassword"></span>
-        </button>
-        <small class="error" *ngIf="form.controls['password'].invalid && form.controls['password'].touched">
+      <!-- PASSWORD -->
+      <div class="form-group">
+
+        <label for="password">
+          Senha
+        </label>
+
+        <div class="input-wrapper">
+
+          <i class="pi pi-lock input-icon"></i>
+
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            placeholder="Digite sua senha"
+            formControlName="password"
+          />
+
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="showPassword = !showPassword"
+          >
+
+            <i
+              class="pi"
+              [ngClass]="showPassword ? 'pi-eye-slash' : 'pi-eye'"
+            ></i>
+
+          </button>
+
+        </div>
+
+        <small
+          class="error"
+          *ngIf="form.controls['password'].invalid && form.controls['password'].touched"
+        >
           Senha obrigatória (mínimo 4 caracteres).
         </small>
+
       </div>
 
-      <small class="login-error" *ngIf="loginError">
-        Credenciais inválidas. Tente novamente.
-      </small>
+      <!-- ERROR -->
+      <div
+        class="login-error"
+        *ngIf="loginError"
+      >
+        <i class="pi pi-exclamation-triangle"></i>
 
-      <button type="submit" [disabled]="form.invalid || loading" class="login-button">
-        {{ loading ? 'Carregando...' : 'Entrar' }}
+        Credenciais inválidas. Tente novamente.
+      </div>
+
+      <!-- BUTTON -->
+      <button
+        type="submit"
+        [disabled]="form.invalid || loading"
+        class="login-button"
+      >
+
+        <i
+          *ngIf="!loading"
+          class="pi pi-sign-in"
+        ></i>
+
+        {{ loading ? 'Entrando...' : 'Entrar' }}
+
       </button>
 
     </form>
-  </div>
-</div>
 
+  </div>
+
+</div>

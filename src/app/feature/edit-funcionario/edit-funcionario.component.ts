@@ -9,7 +9,6 @@ import {
   Validators,
 } from '@angular/forms';
 
-
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
@@ -20,7 +19,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FuncionariosService } from '../funcionarios.service';
 import { IFuncionario } from '../models/IFuncionario';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
-import { NavbarComponent } from "../../core/components/navbar/navbar.component";
+import { NavbarComponent } from '../../core/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-edit-funcionario',
@@ -34,16 +33,23 @@ import { NavbarComponent } from "../../core/components/navbar/navbar.component";
     MessageModule,
     DropdownModule,
     ProgressSpinnerModule,
-    NavbarComponent
-],
+    NavbarComponent,
+  ],
   templateUrl: './edit-funcionario.component.html',
   styleUrls: ['./edit-funcionario.component.scss'],
 })
 export class EditFuncionarioComponent implements OnInit {
   funcionario?: IFuncionario;
+
   errorMessage: string | null = null;
+
+  successMessage: string | null = null;
+
   funcionarioForm: FormGroup;
+
   editMode: boolean = false;
+
+  documentosRemovidos: string[] = [];
 
   categoriasOptions = [
     { label: 'Treinamento', value: 'Treinamento' },
@@ -51,7 +57,7 @@ export class EditFuncionarioComponent implements OnInit {
     { label: 'Histórico', value: 'Historico' },
   ];
 
-  private apiUrl = 'http://localhost:5261'; 
+  private apiUrl = 'http://localhost:5261';
 
   constructor(
     private route: ActivatedRoute,
@@ -75,6 +81,7 @@ export class EditFuncionarioComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+
     if (id) {
       this.funcionariosService.getFuncionarioById(id).subscribe({
         next: (data) => {
@@ -82,14 +89,18 @@ export class EditFuncionarioComponent implements OnInit {
             ...data,
             documentos: data.documentos || [],
           };
+
           this.errorMessage = null;
+
           this.funcionarioForm.patchValue({
             nome: data.nome,
             matricula: data.matricula,
             telefone: data.telefone,
             status: data.status,
           });
+
           this.documentos.clear();
+
           (data.documentos || []).forEach((doc) => {
             this.documentos.push(
               this.fb.group({
@@ -104,8 +115,10 @@ export class EditFuncionarioComponent implements OnInit {
 
           this.funcionarioForm.disable();
         },
+
         error: () => {
-          this.errorMessage = 'Não foi possível carregar os dados do funcionário.';
+          this.errorMessage =
+            'Não foi possível carregar os dados do funcionário.';
         },
       });
     } else {
@@ -126,107 +139,225 @@ export class EditFuncionarioComponent implements OnInit {
   }
 
   removeDocumento(index: number): void {
+    const documento = this.documentos.at(index);
+
+    const documentoId = documento.get('documentoId')?.value;
+
+    if (documentoId) {
+      this.documentosRemovidos.push(documentoId);
+    }
+
     this.documentos.removeAt(index);
   }
 
   onFileChange(event: any, index: number): void {
     const file = event.target.files[0];
+
     if (file) {
-      console.log('Arquivo selecionado:', file.name, 'para o índice:', index);
+      console.log(
+        'Arquivo selecionado:',
+        file.name,
+        'para o índice:',
+        index
+      );
+
       this.documentos.at(index).patchValue({
         arquivo: file,
         nomeArquivo: file.name,
       });
+
+      this.documentos.at(index).get('arquivo')?.updateValueAndValidity();
     } else {
       console.log('Nenhum arquivo selecionado para o índice:', index);
     }
   }
 
-getDocumentoUrl(funcionarioId: string, documentoId: string): SafeUrl {
-  const url = `${this.apiUrl}/api/Funcionarios/${funcionarioId}/documento/${documentoId}`;
-  return this.sanitizer.bypassSecurityTrustUrl(url);
-}
+  getDocumentoUrl(
+    funcionarioId: string,
+    documentoId: string
+  ): SafeUrl {
+    const url = `${this.apiUrl}/api/Funcionarios/${funcionarioId}/documento/${documentoId}`;
 
+    return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
 
   saveFuncionario(): void {
     if (this.funcionarioForm.valid && this.funcionario) {
+      this.errorMessage = null;
+      this.successMessage = null;
+
       const formData = new FormData();
+
       formData.append('Nome', this.funcionarioForm.value.nome);
-      formData.append('Matricula', this.funcionarioForm.value.matricula);
-      formData.append('Telefone', this.funcionarioForm.value.telefone);
+
+      formData.append(
+        'Matricula',
+        this.funcionarioForm.value.matricula
+      );
+
+      formData.append(
+        'Telefone',
+        this.funcionarioForm.value.telefone
+      );
+
       formData.append('Status', this.funcionarioForm.value.status);
 
       const docs = this.funcionarioForm.value.documentos;
+
       const documentoIds: string[] = [];
+
       const categorias: string[] = [];
+
       const arquivos: File[] = [];
 
       docs.forEach((doc: any) => {
-        if (doc.documentoId) documentoIds.push(doc.documentoId);
-        if (doc.categoria) categorias.push(doc.categoria);
-        if (doc.arquivo) arquivos.push(doc.arquivo);
+        if (doc.documentoId) {
+          documentoIds.push(doc.documentoId);
+        }
+
+        if (doc.categoria) {
+          categorias.push(doc.categoria);
+        }
+
+        if (doc.arquivo) {
+          arquivos.push(doc.arquivo);
+        }
       });
 
-      documentoIds.forEach((id) => formData.append('DocumentoIds', id));
-      categorias.forEach((cat) => formData.append('Categorias', cat));
-      arquivos.forEach((file) => formData.append('Arquivos', file));
+      documentoIds.forEach((id) =>
+        formData.append('DocumentoIds', id)
+      );
 
-      this.funcionariosService.updateFuncionario(this.funcionario.funcionarioId, formData).subscribe({
-        next: () => {
-          this.router.navigate(['/funcionarios-ativos']);
-        },
-        error: (err) => {
-          console.error('Erro ao atualizar funcionário:', err);
-          this.errorMessage = err.error?.Message || 'Não foi possível atualizar o funcionário.';
-        },
-      });
+      this.documentosRemovidos.forEach((id) =>
+        formData.append('DocumentosRemovidos', id)
+      );
+
+      categorias.forEach((cat) =>
+        formData.append('Categorias', cat)
+      );
+
+      arquivos.forEach((file) =>
+        formData.append('Arquivos', file)
+      );
+
+      console.log('======= UPDATE FUNCIONARIO =======');
+
+      for (const pair of (formData as any).entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
+      this.funcionariosService
+        .updateFuncionario(
+          this.funcionario.funcionarioId,
+          formData
+        )
+        .subscribe({
+          next: () => {
+            this.successMessage =
+              'Funcionário atualizado com sucesso 🚀';
+
+            this.editMode = false;
+
+            this.funcionarioForm.disable();
+
+            setTimeout(() => {
+              this.router.navigate(['/funcionarios-ativos']);
+            }, 1500);
+          },
+
+          error: (err) => {
+            console.error(
+              'Erro ao atualizar funcionário:',
+              err
+            );
+
+            this.errorMessage =
+              err.error?.Message ||
+              'Não foi possível atualizar o funcionário.';
+          },
+        });
     } else {
-      this.errorMessage = 'Por favor, preencha todos os campos obrigatórios.';
+      this.errorMessage =
+        'Por favor, preencha todos os campos obrigatórios.';
+
       this.funcionarioForm.markAllAsTouched();
     }
   }
 
   deleteFuncionario(): void {
-    if (this.funcionario && confirm('Tem certeza que deseja deletar este funcionário?')) {
-      this.funcionariosService.deleteFuncionario(this.funcionario.funcionarioId).subscribe({
-        next: () => {
-          this.router.navigate(['/funcionarios-ativos']);
-        },
-        error: () => {
-          this.errorMessage = 'Não foi possível deletar o funcionário.';
-        },
-      });
+    if (
+      this.funcionario &&
+      confirm(
+        'Tem certeza que deseja deletar este funcionário?'
+      )
+    ) {
+      this.funcionariosService
+        .deleteFuncionario(this.funcionario.funcionarioId)
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/funcionarios-ativos']);
+          },
+
+          error: () => {
+            this.errorMessage =
+              'Não foi possível deletar o funcionário.';
+          },
+        });
     }
   }
-  openDocumento(funcionarioId: string, documentoId: string) {
-  this.funcionariosService.getDocumentoBlob(funcionarioId, documentoId).subscribe({
-    next: (blob: Blob) => {
-      const fileURL = URL.createObjectURL(blob);
-      window.open(fileURL, '_blank'); // abre em nova aba
-      setTimeout(() => URL.revokeObjectURL(fileURL), 10000);
-    },
-    error: (err) => {
-      console.error('Erro ao baixar documento:', err);
-      this.errorMessage = 'Erro ao abrir o documento.';
-    }
-  });
-}
+
+  openDocumento(
+    funcionarioId: string,
+    documentoId: string
+  ) {
+    this.funcionariosService
+      .getDocumentoBlob(funcionarioId, documentoId)
+      .subscribe({
+        next: (blob: Blob) => {
+          const fileURL = URL.createObjectURL(blob);
+
+          window.open(fileURL, '_blank');
+
+          setTimeout(
+            () => URL.revokeObjectURL(fileURL),
+            10000
+          );
+        },
+
+        error: (err) => {
+          console.error(
+            'Erro ao baixar documento:',
+            err
+          );
+
+          this.errorMessage =
+            'Erro ao abrir o documento.';
+        },
+      });
+  }
 
   enableEdit(): void {
     this.editMode = true;
+
     this.funcionarioForm.enable();
   }
 
   get documentosTreinamentos() {
-    return this.documentos.controls.filter(doc => doc.value.categoria === 'Treinamento');
+    return this.documentos.controls.filter(
+      (doc) => doc.value.categoria === 'Treinamento'
+    );
   }
 
   get documentosIntegracao() {
-    return this.documentos.controls.filter(doc => doc.value.categoria === 'Integracao');
+    return this.documentos.controls.filter(
+      (doc) => doc.value.categoria === 'Integracao'
+    );
   }
 
   get documentosHistorico() {
-    return this.documentos.controls.filter(doc => doc.value.categoria === 'Historico');
+    return this.documentos.controls.filter(
+      (doc) => doc.value.categoria === 'Historico'
+    );
   }
 
   goBack(): void {
